@@ -41,4 +41,5 @@ public class TestConsumer extends DefaultConsumerConfigure implements Applicatio
         }
         return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;
     }
+
 }
