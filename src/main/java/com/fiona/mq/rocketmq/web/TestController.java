@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Objects;
+
 @RestController
 @RequestMapping("/test")
 @Log4j2
@@ -26,12 +28,13 @@ public class TestController {
     private TestTransactionListener testTransactionListener;
 
 
-   /* @GetMapping("/test")
+    @GetMapping("/test")
     public void test(String info) throws Exception {
-        Message message = new Message("TopicTest", "Tag1", "12345", "rocketmq测试成功".getBytes());
+        Message message = new Message("t_TopicTest", "Tag1", "12345", "rocketmq测试成功".getBytes());
         // 这里用到了这个mq的异步处理，类似ajax，可以得到发送到mq的情况，并做相应的处理
         //不过要注意的是这个是异步的
-        defaultMQProducer.send(message, new SendCallback() {
+        System.out.println(Objects.isNull(producer.getTransactionCheckListener()));
+        producer.send(message, new SendCallback() {
             @Override
             public void onSuccess(SendResult sendResult) {
                 log.info("传输成功");
@@ -43,17 +46,19 @@ public class TestController {
                 log.error("传输失败", e);
             }
         });
-    }*/
+    }
 
     @GetMapping("t_test")
     public void Ttest(String info) throws Exception {
-        Message message = new Message("t_TopicTest", "Tag1", "12345", "rocketmq测试成功".getBytes());
+        Message message = new Message("t_TopicTest", "Tag1", "12345", ("rocketmq msg "+info).getBytes());
+        System.out.println(Objects.isNull(producer.getTransactionCheckListener()));
         producer.setTransactionListener(testTransactionListener);
         producer.setSendMsgTimeout(5000);
         producer.sendMessageInTransaction(message, new SendCallback() {
             @Override
             public void onSuccess(SendResult sendResult) {
                 log.info("传输成功");
+                
                 log.info(JSON.toJSONString(sendResult));
             }
             @Override

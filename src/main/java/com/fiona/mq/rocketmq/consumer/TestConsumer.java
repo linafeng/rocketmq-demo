@@ -39,6 +39,12 @@ public class TestConsumer extends DefaultConsumerConfigure implements Applicatio
                 log.error("body转字符串解析失败");
             }
         }
+        try {
+            Thread.sleep(10000);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        log.info("消费完");
         return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;
     }
 
