@@ -3,13 +3,13 @@ rocketmq:
   # 生产者配置
   producer:
     groupName: ${spring.application.name}
-    namesrvAddr: 127.0.0.1:9876
+    namesrvAddr: 10.160.16.115:9876
     default: false
     transaction: true
   # 消费者配置
   consumer:
     groupName: ${spring.application.name}
-    namesrvAddr: 127.0.0.1:9876
+    namesrvAddr: 10.160.16.115:9876
 spring:
   application:
     name: rocketapp

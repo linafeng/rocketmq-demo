@@ -1,6 +1,7 @@
 package com.fiona.mq.rocketmq.web;
 
 import com.alibaba.fastjson.JSON;
+import com.fiona.mq.rocketmq.config.TestMsgOrderListener;
 import com.fiona.mq.rocketmq.config.TestTransactionListener;
 import lombok.extern.log4j.Log4j2;
 import org.apache.rocketmq.client.producer.SendCallback;
@@ -26,6 +27,7 @@ public class TestController {
     private TransactionMQProducer producer;
     @Autowired
     private TestTransactionListener testTransactionListener;
+
 
 
     @GetMapping("/test")
@@ -67,4 +69,17 @@ public class TestController {
             }
         });
     }
+    @GetMapping("order")
+    public void ordertest(String info) throws Exception {
+        producer.setTransactionListener();
+        producer.setSendMsgTimeout(5000);
+
+        for(int i=0;i<5;i++){
+            Message message = new Message("order_TopicTest", "Tag1", "12345", ("rocketmq msg "+info).getBytes());
+            System.out.println(Objects.isNull(producer.getTransactionCheckListener()));
+            producer.send(message);
+        }
+
+    }
+
 }

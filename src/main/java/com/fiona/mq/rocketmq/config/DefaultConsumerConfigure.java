@@ -26,7 +26,7 @@ public abstract class DefaultConsumerConfigure {
         log.info(consumerConfig.toString());
 
         DefaultMQPushConsumer consumer = new DefaultMQPushConsumer(consumerConfig.getGroupName());
-
+        consumer.setConsumeThreadMax(1);
         consumer.setNamesrvAddr(consumerConfig.getNamesrvAddr());
 
         consumer.subscribe(topic, tag);
@@ -38,6 +38,7 @@ public abstract class DefaultConsumerConfigure {
                 return DefaultConsumerConfigure.this.dealBody(msgs);
             }
         });
+       //consumer.registerMessageListener(new TestMsgOrderListener());
 
         consumer.start();
 
